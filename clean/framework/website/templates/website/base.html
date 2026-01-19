@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Bookstore{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        :root {
+            --bg: #0f172a;
+            --bg-soft: #111827;
+            --card: #020617;
+            --accent: #38bdf8;
+            --accent-soft: rgba(56, 189, 248, 0.1);
+            --text: #e5e7eb;
+            --muted: #9ca3af;
+            --danger: #f97373;
+            --radius: 12px;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: radial-gradient(circle at top, #1e293b 0, #020617 55%);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        a { color: inherit; text-decoration: none; }
+        .shell {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 24px 16px 40px;
+            flex: 1;
+        }
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 18px;
+            border-radius: var(--radius);
+            background: linear-gradient(135deg, rgba(15, 23, 42, .9), rgba(15, 23, 42, .65));
+            border: 1px solid rgba(148, 163, 184, .25);
+            backdrop-filter: blur(16px);
+            margin-bottom: 24px;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+        .logo-mark {
+            width: 28px;
+            height: 28px;
+            border-radius: 999px;
+            background: radial-gradient(circle at 30% 10%, #38bdf8, #0ea5e9 40%, #0f172a 100%);
+            box-shadow: 0 0 24px rgba(56, 189, 248, .7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+        nav {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            font-size: 14px;
+        }
+        .nav-link {
+            padding: 6px 10px;
+            border-radius: 999px;
+            color: var(--muted);
+        }
+        .nav-link:hover {
+            background: rgba(148, 163, 184, .08);
+            color: var(--text);
+        }
+        .pill {
+            border-radius: 999px;
+            padding: 6px 12px;
+            font-size: 13px;
+            background: rgba(15, 23, 42, .9);
+            border: 1px solid rgba(148, 163, 184, .35);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .pill-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 999px;
+            background: #22c55e;
+            box-shadow: 0 0 10px #22c55e;
+        }
+        main {
+            background: radial-gradient(circle at top left, rgba(56, 189, 248, .08), transparent 55%),
+                        radial-gradient(circle at bottom right, rgba(59, 130, 246, .1), transparent 60%),
+                        linear-gradient(135deg, #020617, #020617);
+            border-radius: 20px;
+            border: 1px solid rgba(148, 163, 184, .35);
+            padding: 22px 20px 20px;
+            box-shadow:
+                0 24px 65px rgba(15, 23, 42, .9),
+                inset 0 0 0 1px rgba(15, 23, 42, .9);
+        }
+        footer {
+            text-align: center;
+            color: var(--muted);
+            font-size: 12px;
+            padding: 10px 0 18px;
+        }
+        .btn {
+            border-radius: 999px;
+            padding: 7px 14px;
+            font-size: 13px;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+            color: #0b1120;
+            font-weight: 500;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid rgba(148, 163, 184, .45);
+            color: var(--text);
+        }
+        .btn-outline:hover {
+            border-color: rgba(248, 250, 252, .8);
+            background: rgba(15, 23, 42, .85);
+        }
+        .messages {
+            margin-bottom: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .msg {
+            border-radius: 10px;
+            padding: 8px 10px;
+            font-size: 13px;
+            border: 1px solid rgba(148, 163, 184, .3);
+            background: rgba(15, 23, 42, .85);
+        }
+        .msg-success { border-color: #22c55e55; }
+        .msg-error { border-color: #f9737355; }
+        .msg-warning { border-color: #facc1555; }
+        .msg-info { border-color: #38bdf855; }
+
+        @media (max-width: 720px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            nav { width: 100%; justify-content: space-between; }
+        }
+    </style>
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <div class="shell">
+        <header>
+            <a href="{% url 'website:home' %}" class="logo">
+                <div class="logo-mark">B</div>
+                <div>
+                    <div>Clean Bookstore</div>
+                    <div style="font-size: 11px; color: var(--muted);">Clean Architecture · MySQL · Django</div>
+                </div>
+            </a>
+            <nav>
+                <a class="nav-link" href="{% url 'website:home' %}">Sách</a>
+                {% if customer_id %}
+                    <a class="nav-link" href="{% url 'website:cart' %}">Giỏ hàng</a>
+                    <form method="post" action="{% url 'website:logout' %}">
+                        {% csrf_token %}
+                        <button class="btn-outline" style="border-radius:999px;padding:6px 10px;">Đăng xuất</button>
+                    </form>
+                {% else %}
+                    <a class="nav-link" href="{% url 'website:login' %}">Đăng nhập</a>
+                    <a class="nav-link" href="{% url 'website:register' %}">Đăng ký</a>
+                {% endif %}
+            </nav>
+        </header>
+
+        <main>
+            {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="msg msg-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {% block content %}{% endblock %}
+        </main>
+        <footer>
+            Clean Bookstore UI · Dựa trên Clean Architecture (Domain · Usecases · Interfaces · Infrastructure · Framework)
+        </footer>
+    </div>
+</body>
+</html>
+

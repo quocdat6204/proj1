@@ -1,0 +1,44 @@
+{% extends "website/base.html" %}
+
+{% block title %}Giỏ hàng{% endblock %}
+
+{% block content %}
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:12px;flex-wrap:wrap;">
+        <div>
+            <div style="font-size:20px;font-weight:600;margin-bottom:4px;">Giỏ hàng của bạn</div>
+            <div style="font-size:13px;color:#9ca3af;">Dữ liệu tổng tiền được tính ở tầng Domain/Use Case.</div>
+        </div>
+        <a href="{% url 'website:home' %}" style="font-size:13px;color:#9ca3af;">← Tiếp tục mua sách</a>
+    </div>
+
+    {% if cart_data.items %}
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:14px;">
+            {% for row in cart_data.items %}
+                <div style="display:flex;justify-content:space-between;align-items:center;background:rgba(15,23,42,.98);border-radius:12px;padding:10px 12px;border:1px solid rgba(148,163,184,.35);gap:10px;flex-wrap:wrap;">
+                    <div style="flex:3;min-width:200px;">
+                        <div style="font-size:14px;font-weight:500;">{{ row.book.title }}</div>
+                        <div style="font-size:12px;color:#9ca3af;">{{ row.book.author }}</div>
+                    </div>
+                    <div style="flex:1;font-size:13px;min-width:80px;">
+                        SL: {{ row.item.quantity }}
+                    </div>
+                    <div style="flex:1;font-size:13px;min-width:100px;color:#38bdf8;font-weight:600;">
+                        {{ row.subtotal }} đ
+                    </div>
+                    <div>
+                        <form method="post" action="{% url 'website:remove_from_cart' row.item.id %}">
+                            {% csrf_token %}
+                            <button class="btn-outline" type="submit" style="font-size:12px;padding:5px 10px;">Xóa</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div style="display:flex;justify-content:flex-end;font-size:15px;font-weight:600;">
+            Tổng cộng: <span style="color:#38bdf8;margin-left:6px;">{{ cart_data.total }} đ</span>
+        </div>
+    {% else %}
+        <div style="font-size:13px;color:#9ca3af;">Giỏ hàng trống.</div>
+    {% endif %}
+{% endblock %}
+

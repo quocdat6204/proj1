@@ -1,0 +1,27 @@
+{% extends "website/base.html" %}
+
+{% block title %}Đăng nhập{% endblock %}
+
+{% block content %}
+    <div style="max-width:360px;margin:0 auto;">
+        <div style="font-size:20px;font-weight:600;margin-bottom:10px;">Đăng nhập</div>
+        <form method="post" style="display:flex;flex-direction:column;gap:10px;">
+            {% csrf_token %}
+            <label style="font-size:13px;">
+                Email
+                <input type="email" name="email" required
+                       style="margin-top:4px;width:100%;border-radius:999px;border:1px solid rgba(148,163,184,.5);background:rgba(15,23,42,.9);color:#e5e7eb;padding:6px 12px;font-size:13px;">
+            </label>
+            <label style="font-size:13px;">
+                Mật khẩu
+                <input type="password" name="password" required
+                       style="margin-top:4px;width:100%;border-radius:999px;border:1px solid rgba(148,163,184,.5);background:rgba(15,23,42,.9);color:#e5e7eb;padding:6px 12px;font-size:13px;">
+            </label>
+            <button class="btn" type="submit">Đăng nhập</button>
+            <div style="font-size:12px;color:#9ca3af;">
+                Chưa có tài khoản? <a href="{% url 'website:register' %}" style="color:#38bdf8;">Đăng ký</a>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+

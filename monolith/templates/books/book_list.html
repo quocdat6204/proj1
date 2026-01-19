@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Book Catalog - Book Store{% endblock %}
+
+{% block content %}
+<h1 class="text-white text-center mb-4">📖 Book Catalog</h1>
+
+<div class="row">
+    {% for book in books %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{ book.title }}</h5>
+                <p class="card-text">
+                    <strong>Author:</strong> {{ book.author }}<br>
+                    <strong>Price:</strong> ${{ book.price }}<br>
+                    <strong>Stock:</strong>
+                    {% if book.stock > 0 %}
+                    <span class="badge bg-success">{{ book.stock }} available</span>
+                    {% else %}
+                    <span class="badge bg-danger">Out of stock</span>
+                    {% endif %}
+                </p>
+            </div>
+            <div class="card-footer bg-transparent">
+                {% if book.stock > 0 %}
+                <a href="{% url 'add_to_cart' book.id %}" class="btn btn-primary w-100">
+                    🛒 Add to Cart
+                </a>
+                {% else %}
+                <button class="btn btn-secondary w-100" disabled>Out of Stock</button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body text-center">
+                <p class="mb-0">No books available at the moment.</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
